@@ -1,0 +1,17 @@
+idea/
+*.iws
+*.iml
+*.ipr
+/target/
+*.log
+/logs/
+*.class
+*.jar
+*.war
+*.ear
+*.db
+.DS_Store
+Thumbs.db
+.mvn/
+!**/src/main/**
+.env

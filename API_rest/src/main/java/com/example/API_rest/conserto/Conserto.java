@@ -18,8 +18,8 @@ public class Conserto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String dataEntrada;
-    private String dataSaida;
+    private String data_entrada;
+    private String data_saida;
 
     @Embedded
     private Mecanico mecanico;
@@ -28,8 +28,8 @@ public class Conserto {
     private Veiculo veiculo;
 
     public Conserto(DadosCadastroConserto dados){
-        this.dataEntrada = dados.dataEntrada();
-        this.dataSaida = dados.dataSaida();
+        this.data_entrada = dados.dataEntrada();
+        this.data_saida = dados.dataSaida();
         this.mecanico = new Mecanico(dados.mecanico());
         this.veiculo = new Veiculo(dados.veiculo());
     }
