@@ -1,5 +1,6 @@
 package com.example.API_rest.mecanico;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,11 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Mecanico {
-    String nome;
-    String anos_de_experiencia;
+    @Column(name = "mecanico_nome")
+    private String nome;
 
-    public Mecanico(DadosMecanico dados){
+    @Column(name = "mecanico_anos_de_experiencia")
+    private String anosDeExperiencia;
+
+    public Mecanico(DadosMecanico dados) {
         this.nome = dados.nome();
-        this.anos_de_experiencia = dados.anos_de_experiencia();
+        this.anosDeExperiencia = dados.anos_de_experiencia();
     }
 }

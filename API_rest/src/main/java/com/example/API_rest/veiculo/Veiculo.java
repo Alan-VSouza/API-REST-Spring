@@ -1,5 +1,6 @@
 package com.example.API_rest.veiculo;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,11 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Veiculo {
-    String marca;
-    String modelo;
-    String ano;
+    @Column(name = "veiculo_marca")
+    private String marca;
 
-    public Veiculo(DadosVeiculo dados){
+    @Column(name = "veiculo_modelo")
+    private String modelo;
+
+    @Column(name = "veiculo_ano")
+    private String ano;
+
+    public Veiculo(DadosVeiculo dados) {
         this.marca = dados.marca();
         this.modelo = dados.modelo();
         this.ano = dados.ano();
