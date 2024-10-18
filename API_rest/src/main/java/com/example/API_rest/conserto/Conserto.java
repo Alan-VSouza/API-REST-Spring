@@ -31,10 +31,6 @@ public class Conserto {
     @Embedded
     private Veiculo veiculo;
 
-    @Column(name = "veiculo_cor")
-    private String veiculoCor;
-
-
     public Conserto(DadosCadastroConserto dados) {
         this.dataEntrada = dados.data_entrada();
         this.dataSaida = dados.data_saida();

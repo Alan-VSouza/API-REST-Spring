@@ -20,9 +20,13 @@ public class Veiculo {
     @Column(name = "veiculo_ano")
     private String ano;
 
+    @Column(name = "veiculo_cor")
+    private String cor;
+
     public Veiculo(DadosVeiculo dados) {
         this.marca = dados.marca();
         this.modelo = dados.modelo();
         this.ano = dados.ano();
+        this.cor = dados.cor();
     }
 }
