@@ -1,14 +1,12 @@
 package com.example.API_rest.controller;
 
-import com.example.API_rest.conserto.Conserto;
-import com.example.API_rest.conserto.ConsertoRepository;
-import com.example.API_rest.conserto.DadosCadastroConserto;
-import com.example.API_rest.conserto.DadosListagemConserto;
+import com.example.API_rest.conserto.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,14 +26,28 @@ public class ConsertoController {
 
     @GetMapping("algunsdados")
     public List<DadosListagemConserto> listarAlgunsDados() {
-        return repository.findAll().stream().map(DadosListagemConserto::new).toList();
+        return repository.findAllByAtivoTrue().stream().map(DadosListagemConserto::new).toList();
     }
-
-
 
     @PostMapping
     @Transactional
     public void cadastrar(@RequestBody @Valid DadosCadastroConserto dados){
         repository.save(new Conserto(dados));
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizar (@RequestBody @Valid DadosAtualizacaoConserto dados){
+        Conserto conserto = repository.getReferenceById(dados.id());
+        conserto.atualizar(dados);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id){
+        Conserto conserto = repository.getReferenceById(id);
+        conserto.excluir();
+
+        return ResponseEntity.noContent().build();
     }
 }
