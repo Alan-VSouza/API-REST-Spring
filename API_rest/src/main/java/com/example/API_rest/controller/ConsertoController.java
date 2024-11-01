@@ -21,13 +21,13 @@ public class ConsertoController {
     private ConsertoRepository repository;
 
     @GetMapping
-    public Page<Conserto> listarTodos(Pageable paginacao) {
-        return repository.findAll(paginacao);
+    public ResponseEntity listarTodos(Pageable paginacao) {
+        return ResponseEntity.ok(repository.findAll(paginacao));
     }
 
     @GetMapping("algunsdados")
-    public List<DadosListagemConserto> listarAlgunsDados() {
-        return repository.findAllByAtivoTrue().stream().map(DadosListagemConserto::new).toList();
+    public ResponseEntity listarAlgunsDados() {
+        return ResponseEntity.ok(repository.findAllByAtivoTrue().stream().map(DadosListagemConserto::new).toList());
     }
 
     @PostMapping
@@ -42,30 +42,12 @@ public class ConsertoController {
 
     @PutMapping
     @Transactional
-    public void atualizar (@RequestBody @Valid DadosAtualizacaoConserto dados){
-        Conserto conserto = repository.getReferenceById(dados.id());
-        conserto.atualizar(dados);
-    }
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoConserto dados) {
 
-    @PatchMapping("/{id}")
-    @Transactional
-    public ResponseEntity atualizarEspecifico(@PathVariable Long id, @RequestBody DadosAtualizacaoConserto dados) {
-        Optional<Conserto> consertoOptional = repository.findById(id);
-        if (consertoOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Conserto conserto = consertoOptional.get();
-        conserto.setDataSaida(dados.data_saida());
-        if (dados.mecanico() != null) {
-            if (dados.mecanico().nome() != null) {
-                conserto.getMecanico().setNome(dados.mecanico().nome());
-            }
-            if (dados.mecanico().anos_de_experiencia() != null) {
-                conserto.getMecanico().setAnosDeExperiencia(dados.mecanico().anos_de_experiencia());
-            }
-        }
+        Conserto conserto = repository.getReferenceById( dados.id() );
+        conserto.atualizarInformacoes(dados);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok( new DadosDetalhamentoConserto(conserto) );
     }
 
     @GetMapping("/{id}")

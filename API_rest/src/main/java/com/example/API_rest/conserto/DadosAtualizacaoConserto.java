@@ -7,6 +7,4 @@ public record DadosAtualizacaoConserto(
         @NotNull
         Long id,
         String data_saida,
-        DadosMecanico mecanico
-) {
-}
+        DadosMecanico mecanico) {}
