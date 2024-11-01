@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,6 +41,18 @@ public class ConsertoController {
     public void atualizar (@RequestBody @Valid DadosAtualizacaoConserto dados){
         Conserto conserto = repository.getReferenceById(dados.id());
         conserto.atualizar(dados);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getConsertoById(@PathVariable Long id) {
+        Optional<Conserto> consertoOptional = repository.findById(id);
+        if (consertoOptional.isPresent()) {
+            Conserto conserto = consertoOptional.get();
+            return ResponseEntity.ok(new DadosDetalhamentoConserto(conserto));
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
