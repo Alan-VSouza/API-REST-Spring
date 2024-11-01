@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/conserto")
@@ -43,16 +42,32 @@ public class ConsertoController {
         conserto.atualizar(dados);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity getConsertoById(@PathVariable Long id) {
+    @PatchMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizarEspecifico(@PathVariable Long id, @RequestBody DadosAtualizacaoConserto dados) {
         Optional<Conserto> consertoOptional = repository.findById(id);
-        if (consertoOptional.isPresent()) {
-            Conserto conserto = consertoOptional.get();
-            return ResponseEntity.ok(new DadosDetalhamentoConserto(conserto));
-        }
-        else {
+        if (consertoOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        Conserto conserto = consertoOptional.get();
+        conserto.setDataSaida(dados.data_saida());
+        if (dados.mecanico() != null) {
+            if (dados.mecanico().nome() != null) {
+                conserto.getMecanico().setNome(dados.mecanico().nome());
+            }
+            if (dados.mecanico().anos_de_experiencia() != null) {
+                conserto.getMecanico().setAnosDeExperiencia(dados.mecanico().anos_de_experiencia());
+            }
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Conserto> getConsertoById(@PathVariable Long id) {
+        Optional<Conserto> consertoOptional = repository.findById(id);
+        return consertoOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

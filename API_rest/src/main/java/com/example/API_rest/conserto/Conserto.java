@@ -49,4 +49,8 @@ public class Conserto {
     public void excluir() {
         this.ativo = false;
     }
+
+    public void setDataSaida(String dataSaida) {
+        this.dataSaida = dataSaida;
+    }
 }

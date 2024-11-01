@@ -22,8 +22,16 @@ public class Mecanico {
         this.anosDeExperiencia = dados.anos_de_experiencia();
     }
 
-    public void atualizarInformacoes(DadosMecanico dados){
+    public void atualizarInformacoes(DadosMecanico dados) {
         if (dados.nome() != null) this.nome = dados.nome();
         if (dados.anos_de_experiencia() != null) this.anosDeExperiencia = dados.anos_de_experiencia();
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setAnosDeExperiencia(String anosDeExperiencia) {
+        this.anosDeExperiencia = anosDeExperiencia;
     }
 }
