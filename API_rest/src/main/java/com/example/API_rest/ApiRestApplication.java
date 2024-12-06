@@ -12,7 +12,9 @@ Felipe Santos Lourenço - SC303867X
 public class ApiRestApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Diretório atual: " + System.getProperty("user.dir"));
 		SpringApplication.run(ApiRestApplication.class, args);
 	}
+
 
 }

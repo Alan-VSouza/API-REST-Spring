@@ -1,6 +1,9 @@
 package com.example.API_rest.controller;
 
+import com.example.API_rest.usuario.Usuario;
 import com.example.API_rest.usuario.dadosAutenticacao;
+import com.example.API_rest.util.security.DadosTokenJWT;
+import com.example.API_rest.util.security.PW3TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +20,17 @@ public class AutenticacaoController {
     @Autowired
     private AuthenticationManager manager;
 
+    @Autowired
+    private PW3TokenService tokenService;
+
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid dadosAutenticacao dados) {
         var token = new UsernamePasswordAuthenticationToken( dados.login(), dados.senha() );
         var authentication = manager.authenticate(token);
-        return ResponseEntity.ok().build();
+        var tokenJWT = tokenService.gerarToken( (Usuario) authentication.getPrincipal() );
+
+        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
+
+
 }
